@@ -15,11 +15,11 @@ function handleSubmit(event) {
     const newPromise = createPromise(position, delayStep);
 
     newPromise
-        .then(() => {
-            Notiflix.Notify.success(`Fulfilled promise ${newPromise.position} in ${newPromise.delay} ms`);
+        .then(({position, delay}) => {
+            Notiflix.Notify.success(`Fulfilled promise ${position} in ${delay} ms`);
           })
-        .catch(() => {
-            Notiflix.Notify.failure(`Rejected promise ${newPromise.position} in ${newPromise.delay} ms`);
+        .catch(({position, delay}) => {
+            Notiflix.Notify.failure(`Rejected promise ${position} in ${delay} ms`);
           });
     position += 1;
     delayStep += Number(step.value);
@@ -32,10 +32,10 @@ function createPromise(position, delay) {
     const shouldResolve = Math.random() > 0.3;
     setTimeout(() => {
       if (shouldResolve) {
-        resolve('succes');
+        resolve({position, delay});
       }
       else {
-        reject('error');
+        reject({position, delay});
       }
     }, delay);
   });
